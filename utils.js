@@ -26,6 +26,9 @@ exports.isEmpty = function (obj) {
 
 exports.longestCommonPrefix = function (word, labels) {
   const matches = labels.map(function(label) {
+    if (label[0] !== word[0]) {
+      return 0;
+    }
     return label.split('').reduce(function(acum, letter, index) {
       if (letter === word[index]) {
         return acum + 1;

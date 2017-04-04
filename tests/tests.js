@@ -1,7 +1,7 @@
 const test = require('tape');
 const RadixTree = require('../radixtree').RadixTree;
 
-test('timing test', (t) => {
+test('AddWord Tests', (t) => {
   t.plan(5);
   const trie = new RadixTree();
   trie.addWord('test', 'test');
@@ -80,4 +80,155 @@ test('timing test', (t) => {
         data: [],
       },
     }, 'Should Rearrange');
+});
+
+
+test('AddWord Re-Arrenge Tests', (t) => {
+  t.plan(4);
+  const trie = new RadixTree();
+
+  trie.addWord('hola', 'hola');
+  trie.addWord('hoyo', 'hoyo');
+  t.deepEqual(trie.root.labels,
+    {
+      ho: {
+        labels: {
+          la: {
+            labels: {},
+            data: ['hola'],
+            eow: true,
+          },
+          yo: {
+            labels: {},
+            data: ['hoyo'],
+            eow: true,
+          },
+        },
+        eow: false,
+        data: [],
+      },
+    }, 'Should Rearrange with hola and hoyo');
+
+  trie.addWord('holo', 'holo');
+  t.deepEqual(trie.root.labels,
+    {
+      ho: {
+        labels: {
+          l: {
+            labels: {
+              a: {
+                labels: {},
+                data: ['hola'],
+                eow: true,
+              },
+              o: {
+                labels: {},
+                data: ['holo'],
+                eow: true,
+              },
+            },
+            data: [],
+            eow: false,
+          },
+          yo: {
+            labels: {},
+            data: ['hoyo'],
+            eow: true,
+          },
+        },
+        eow: false,
+        data: [],
+      },
+    }, 'Should Rearrange with holo');
+
+  trie.addWord('hoya', 'hoya');
+  t.deepEqual(trie.root.labels,
+    {
+      ho: {
+        labels: {
+          l: {
+            labels: {
+              a: {
+                labels: {},
+                data: ['hola'],
+                eow: true,
+              },
+              o: {
+                labels: {},
+                data: ['holo'],
+                eow: true,
+              },
+            },
+            data: [],
+            eow: false,
+          },
+          y: {
+            labels: {
+              a: {
+                labels: {},
+                data: ['hoya'],
+                eow: true,
+              },
+              o: {
+                labels: {},
+                data: ['hoyo'],
+                eow: true,
+              },
+            },
+            data: [],
+            eow: false,
+          },
+        },
+        eow: false,
+        data: [],
+      },
+    }, 'Should Rearrange with hoya');
+
+  trie.addWord('joya', 'joya');
+  t.deepEqual(trie.root.labels,
+    {
+      ho: {
+        labels: {
+          l: {
+            labels: {
+              a: {
+                labels: {},
+                data: ['hola'],
+                eow: true,
+              },
+              o: {
+                labels: {},
+                data: ['holo'],
+                eow: true,
+              },
+            },
+            data: [],
+            eow: false,
+          },
+          y: {
+            labels: {
+              a: {
+                labels: {},
+                data: ['hoya'],
+                eow: true,
+              },
+              o: {
+                labels: {},
+                data: ['hoyo'],
+                eow: true,
+              },
+            },
+            data: [],
+            eow: false,
+          },
+        },
+        eow: false,
+        data: [],
+      },
+      joya: {
+        labels: {},
+        eow: true,
+        data: ['joya'],
+      },
+    }, 'Should Rearrange with Joooooooyaaaaa!');
 });

@@ -21,7 +21,7 @@ class Node {
 }
 
 
-export default class RadixTree {
+exports.RadixTree = class RadixTree {
   constructor() {
     this.root = new Root();
   }
