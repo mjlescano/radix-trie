@@ -1,0 +1,26 @@
+{
+  "name": "radix-tree",
+  "version": "1.0.0",
+  "description": "Radix-Tree implementation for Inverse Index Document Search.",
+  "main": "radixtree.js",
+  "scripts": {
+    "test": "tape tests/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Plataforma5/radix-tree.git"
+  },
+  "keywords": [
+    "radix",
+    "trie"
+  ],
+  "author": "Plataforma 5",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Plataforma5/radix-tree/issues"
+  },
+  "homepage": "https://github.com/Plataforma5/radix-tree#readme",
+  "dependencies": {
+    "tape": "^4.6.3"
+  }
+}
