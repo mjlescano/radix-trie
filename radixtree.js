@@ -12,25 +12,58 @@ class Node {
   }
 }
 
-export default class RadixTree = {
-  constructor(){
+export default class RadixTree {
+  constructor() {
     this.root = new Root();
   }
-  addWord(word, data){
-    if(typeof word !== 'string') return new Error('dont be such a sucker');
-  }
-  addMany(wordArray, data){
+  addWord(word, data) {
 
   }
-  findPartial(word){
-
+  addMany(wordArray, data) {
+    wordArray.forEach(word => this.addWord(word, data));
+  }
+  findPartial(word) {
+    const node = this.find(word);
+    return this.extracNodes(node);
   }
 
-  findWord(word){
-
+  extractNodes(node) {
+    if (!Object.keys(node.labels).length) {
+      return node.data;
+    }
+    return this.concatMap(Object.keys(node.labels), label => this.extractNodes(node.labels[label]));
   }
 
-  removeWord(word, data){
+
+  search(word, tree) {
+    if (this.labels[word]) {
+      return this.labels[word];
+    }
+    for (let i = word.length - 1; i > 0; i -= 0) {
+      if (this.labels[word.slice(0, i)]) {
+        return tree.search.call(this.labels[word.slice(0, i)], word.slice(i), tree);
+      }
+    }
+    return false;
+  }
+
+  find(word) {
+    const tree = this;
+    return this.search.call(this.root, word, tree);
+  }
+
+  findWord(word) {
+    const node = this.find(word);
+    if (node) {
+      return {
+        word,
+        data: node.data,
+      };
+    }
+    return node;
+  }
+
+  removeWord(word, data) {
 
   }
 
@@ -39,5 +72,14 @@ export default class RadixTree = {
       removeWord(oldWord, data);
     })
     addMany(newWordArray, data);
+  }
+
+  concatMap(arr, fn) {
+    const newArr = arr.map(elem => fn(elem));
+    const finalArr = [];
+    newArr.forEach((nArr) => {
+      nArr.forEach(elem => finalArr.push(elem));
+    });
+    return finalArr;
   }
 }
