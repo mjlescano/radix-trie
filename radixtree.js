@@ -74,10 +74,10 @@ exports.RadixTree = class RadixTree {
 
 
   search(word, tree) {
-    if (this.labels[word]) {
-      return this.labels[word];
+    if (!word) {
+      return this;
     }
-    for (let i = word.length - 1; i > 0; i -= 1) {
+    for (let i = 1; i <= word.length; i += 1) {
       if (this.labels[word.slice(0, i)]) {
         return tree.search.call(this.labels[word.slice(0, i)], word.slice(i), tree);
       }
@@ -105,7 +105,7 @@ exports.RadixTree = class RadixTree {
 
   }
 
-  update(oldWordArray, newWordArray, data){
+  update(oldWordArray, newWordArray, data) {
     oldWordArray.forEach((oldWord) => {
       removeWord(oldWord, data);
     })
