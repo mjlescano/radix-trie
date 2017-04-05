@@ -2,7 +2,7 @@ const test = require('tape');
 const RadixTree = require('../radixtree').RadixTree;
 
 test('Search Tests FindWord', (t) => {
-  t.plan(5);
+  t.plan(3);
   const trie = new RadixTree();
   trie.addWord('test', 'test');
   trie.addWord('testar', 'testar');

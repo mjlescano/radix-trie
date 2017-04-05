@@ -77,7 +77,7 @@ exports.RadixTree = class RadixTree {
     if (this.labels[word]) {
       return this.labels[word];
     }
-    for (let i = word.length - 1; i > 0; i -= 0) {
+    for (let i = word.length - 1; i > 0; i -= 1) {
       if (this.labels[word.slice(0, i)]) {
         return tree.search.call(this.labels[word.slice(0, i)], word.slice(i), tree);
       }
