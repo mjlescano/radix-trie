@@ -101,8 +101,40 @@ exports.RadixTree = class RadixTree {
     return node;
   }
 
-  removeWord(word, data) {
+  removeData(node, parent, data, word) {
+    if (node.data.length > 1 || Object.keys(node.labels).length > 1) {
+      node.data = node.data.filter(id => id !== data)
+    }
+    if (node.data.length == 0 && Object.keys(node.labels).length == 0) {
+      delete parent.labels[word];
+    }
+  }
 
+  reorderNodes(node, parent, word) {
+    if (node.data.length == 0 && Object.keys(node.labels).length == 1) {
+      const label = Object.keys(node.labels)[0];
+      delete parent.label[word];
+      parent.labels[word.concat(label)] = node.labels[label];
+    }
+  }
+
+  findAndRemove(word, data, tree) {
+    if(this.label[word]) {
+      this.removeData(this.label[word], this, data, word);
+      return this;
+    }
+    for (let i = word.length - 1; i > 0; i -= 1) {
+      if (this.labels[word.slice(0, i)]) {
+        tree.findAndRemove.call(this.labels[word.slice(0, i)], word.slice(i), data, tree);
+        reorderNodes(this.label[word], this, word);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  removeWord(word, data) {
+    return this.findAndRemove.call(this.root, word, this)
   }
 
   update(oldWordArray, newWordArray, data) {
