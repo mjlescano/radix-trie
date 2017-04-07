@@ -149,7 +149,7 @@ exports.RadixTree = class RadixTree {
   removeData(node, parent, data, word) {
     if (node.data.length > 1 || Object.keys(node.labels).length > 1) {
       node.data = node.data.filter(id => id !== data);
-      if(node.data.length == 0 || Object.keys(node.labels).length > 1){
+      if(node.data.length == 0 && Object.keys(node.labels).length > 1){
         node.eow = false;
       }
     }
@@ -160,7 +160,7 @@ exports.RadixTree = class RadixTree {
 
   reorderNodes(node, parent, word) {
     if (node.data.length == 0 && Object.keys(node.labels).length == 1) {
-      const label = Object.keys(node.labels)[0];
+      const label = String(Object.keys(node.labels));
       delete parent.labels[word];
       parent.labels[word.concat(label)] = node.labels[label];
     }
