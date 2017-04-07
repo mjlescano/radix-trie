@@ -24,22 +24,42 @@ exports.isEmpty = function (obj) {
   return true;
 };
 
+// exports.longestCommonPrefix = function (word, labels) {
+//   const matches = labels.map(function(label) {
+//     if (label[0] !== word[0]) {
+//       return 0;
+//     }
+//     return label.split('').reduce(function(acum, letter, index) {
+//       if (letter === word[index]) {
+//         return acum + 1;
+//       }
+//       return acum;
+//     }, 0);
+//   });
+//   const label = labels[matches.indexOf(Math.max(...matches))];
+//   let lcp = label;
+//   while (word.indexOf(lcp) !== 0) {
+//     lcp = lcp.slice(0, -1);
+//   }
+//   return [lcp, label];
+// };
+
 exports.longestCommonPrefix = function (word, labels) {
-  const matches = labels.map(function(label) {
-    if (label[0] !== word[0]) {
-      return 0;
-    }
-    return label.split('').reduce(function(acum, letter, index) {
-      if (letter === word[index]) {
-        return acum + 1;
+  const l = labels.sort();
+  let lcp;
+  let label;
+  for (let i = 0; i < l.length; i += 1) {
+    if (word.charAt(0) < l[i].charAt(0)) {
+      lcp = '';
+      break;
+    } else if (word.charAt(0) === l[i].charAt(0)) {
+      label = l[i];
+      lcp = label;
+      while (word.indexOf(lcp) !== 0) {
+        lcp = lcp.slice(0, -1);
       }
-      return acum;
-    }, 0);
-  });
-  const label = labels[matches.indexOf(Math.max(...matches))];
-  let lcp = label;
-  while (word.indexOf(lcp) !== 0) {
-    lcp = lcp.slice(0, -1);
+      break;
+    }
   }
   return [lcp, label];
 };

@@ -22,5 +22,8 @@
   "homepage": "https://github.com/Plataforma5/radix-tree#readme",
   "dependencies": {
     "tape": "^4.6.3"
+  },
+  "devDependencies": {
+    "rword": "^2.1.0"
   }
 }

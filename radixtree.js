@@ -43,17 +43,17 @@ exports.RadixTree = class RadixTree {
 
     // Get Longest Common Prefix with all Labels
     const [lcp, label] = longestCommonPrefix(word, Object.keys(node.labels));
-    if (node.labels[lcp]) { // If the label for the lcp exists
-      return this.addWord(word.substring(lcp.length), data, node.labels[lcp]);
-    }
     if (!lcp) {
       node.labels[word] = new Node(true, node).addData(data);
       return this;
     }
+    if (node.labels[lcp]) { // If the label for the lcp exists
+      return this.addWord(word.substring(lcp.length), data, node.labels[lcp]);
+    }
     // If the lcp is not null, and it does not exists, we need to rearrenge
     node.labels[lcp] = new Node(false, node);
     this.addWord(word.substring(lcp.length), data, node.labels[lcp]);
-    node.labels[lcp].labels[getDifference(lcp, label)] = Object.assign({}, node.labels[label]);
+    node.labels[lcp].labels[getDifference(lcp, label)] = node.labels[label];
     delete node.labels[label];
     return this;
   }
