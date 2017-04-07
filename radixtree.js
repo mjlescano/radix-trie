@@ -148,9 +148,12 @@ exports.RadixTree = class RadixTree {
 
   removeData(node, parent, data, word) {
     if (node.data.length > 1 || Object.keys(node.labels).length > 1) {
-      node.data = node.data.filter(id => id !== data)
+      node.data = node.data.filter(id => id !== data);
+      if(node.data.length == 0 || Object.keys(node.labels).length > 1){
+        node.eow = false;
+      }
     }
-    if (node.data.length == 0 && Object.keys(node.labels).length == 0) {
+    if (node.data.length <= 1 && Object.keys(node.labels).length == 0) {
       delete parent.labels[word];
     }
   }
@@ -158,20 +161,20 @@ exports.RadixTree = class RadixTree {
   reorderNodes(node, parent, word) {
     if (node.data.length == 0 && Object.keys(node.labels).length == 1) {
       const label = Object.keys(node.labels)[0];
-      delete parent.label[word];
+      delete parent.labels[word];
       parent.labels[word.concat(label)] = node.labels[label];
     }
   }
 
   findAndRemove(word, data, tree) {
-    if(this.label[word]) {
-      this.removeData(this.label[word], this, data, word);
+    if (this.labels[word]) {
+      tree.removeData(this.labels[word], this, data, word);
       return this;
     }
-    for (let i = word.length - 1; i > 0; i -= 1) {
+    for (let i = 1; i <= word.length; i += 1) {
       if (this.labels[word.slice(0, i)]) {
         tree.findAndRemove.call(this.labels[word.slice(0, i)], word.slice(i), data, tree);
-        this.reorderNodes(this.label[word], this, word);
+        tree.reorderNodes(this.labels[word.slice(0, i)], this, word.slice(0, i));
         return true;
       }
     }
@@ -179,7 +182,8 @@ exports.RadixTree = class RadixTree {
   }
 
   removeWord(word, data) {
-    return this.findAndRemove.call(this.root, word, this)
+    const tree = this;
+    return this.findAndRemove.call(this.root, word, data, tree)
   }
 
   update(oldWordArray, newWordArray, data) {
