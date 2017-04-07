@@ -1,6 +1,7 @@
 const isEmpty = require('./utils.js').isEmpty;
 const longestCommonPrefix = require('./utils.js').longestCommonPrefix;
 const getDifference = require('./utils.js').getDifference;
+const concatMap = require('./utils.js').concatMap;
 
 class Root {
   constructor() {
@@ -70,7 +71,7 @@ exports.RadixTree = class RadixTree {
     if (!Object.keys(node.labels).length) {
       return node.data;
     }
-    return node.data.concat(this.concatMap(Object.keys(node.labels), label => this.extractNodes(node.labels[label])));
+    return node.data.concat(concatMap(Object.keys(node.labels), label => this.extractNodes(node.labels[label])));
   }
 
   search(word, tree) {
@@ -141,7 +142,7 @@ exports.RadixTree = class RadixTree {
   getData(node) {
     if(!node) node = this.root;
     if(isEmpty(node.labels)) return node.data;
-    return node.data.concat(this.concatMap(Object.keys(node.labels),
+    return node.data.concat(concatMap(Object.keys(node.labels),
        label => this.getData(node.labels[label])));
   };
 
@@ -170,7 +171,7 @@ exports.RadixTree = class RadixTree {
     for (let i = word.length - 1; i > 0; i -= 1) {
       if (this.labels[word.slice(0, i)]) {
         tree.findAndRemove.call(this.labels[word.slice(0, i)], word.slice(i), data, tree);
-        reorderNodes(this.label[word], this, word);
+        this.reorderNodes(this.label[word], this, word);
         return true;
       }
     }
@@ -183,16 +184,8 @@ exports.RadixTree = class RadixTree {
 
   update(oldWordArray, newWordArray, data) {
     oldWordArray.forEach((oldWord) => {
-      removeWord(oldWord, data);
+      this.removeWord(oldWord, data);
     })
-    addMany(newWordArray, data);
-  }
-  concatMap(arr, fn) {
-    const newArr = arr.map(elem => fn(elem));
-    const finalArr = [];
-    newArr.forEach((nArr) => {
-      nArr.forEach(elem => finalArr.push(elem));
-    });
-    return finalArr;
+    this.addMany(newWordArray, data);
   }
 }

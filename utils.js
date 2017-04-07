@@ -79,3 +79,12 @@ exports.getDifference = function(a, b){
   }
   return result;
 };
+
+exports.concatMap = function (arr, fn) {
+  const newArr = arr.map(elem => fn(elem));
+  const finalArr = [];
+  newArr.forEach((nArr) => {
+    nArr.forEach(elem => finalArr.push(elem));
+  });
+  return finalArr;
+}
