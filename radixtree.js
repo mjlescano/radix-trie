@@ -16,6 +16,7 @@ class Node {
   }
   addData(data) {
     this.data.push(data);
+    this.eow = true;
     return this;
   }
 }
@@ -58,20 +59,19 @@ exports.RadixTree = class RadixTree {
     return this;
   }
   addMany(wordArray, data) {
-    wordArray.forEach(word => this.addWord(word, data));
+    wordArray.sort().forEach(word => this.addWord(word, data));
   }
   findPartial(word) {
     const node = this.find(word);
-    return this.extracNodes(node);
+    return this.extractNodes(node);
   }
 
   extractNodes(node) {
     if (!Object.keys(node.labels).length) {
       return node.data;
     }
-    return this.concatMap(Object.keys(node.labels), label => this.extractNodes(node.labels[label]));
+    return node.data.concat(this.concatMap(Object.keys(node.labels), label => this.extractNodes(node.labels[label])));
   }
-
 
   search(word, tree) {
     if (!word) {
@@ -90,7 +90,7 @@ exports.RadixTree = class RadixTree {
     return this.search.call(this.root, word, tree);
   }
 
-  findWord(word) {
+  findNode(word) {
     const node = this.find(word);
     if (node) {
       return {
@@ -100,6 +100,50 @@ exports.RadixTree = class RadixTree {
     }
     return node;
   }
+
+  findData(substring, node) {
+    if(!node) {
+      node = this.root;
+    }
+    if(substring.length < 1 || isEmpty(node.labels)) {
+      return this.getData(node);
+    }
+    for (let i = 1; i <= substring.length; i += 1) {
+      if (node.labels.hasOwnProperty(substring.slice(0,i))) {
+        return this.findData(substring.slice(i), node.labels[substring.slice(0,i)]);
+      }
+    }
+    for (let i in Object.keys(node.labels) ) {
+      let label = Object.keys(node.labels)[i]
+      if(substring.charAt(0) === label.charAt(0)) {
+          return this.findData(getDifference(label, substring), node.labels[label]);    
+      }
+      return this.getData(node.labels[label]);
+    };
+  }
+
+  autocomplete(substring, node, words) {
+    if(!node) node = this.root;
+    if(!words) words = [];
+    
+    if(node.eow) {
+      words.push(substring);
+    }
+    for (let i in Object.keys(node.labels) ) {
+      let label = Object.keys(node.labels)[i]
+      if(substring.charAt(0) === label.charAt(0)) {
+        return this.findData(getDifference(label, substring), node.labels[label]);    
+      }
+    };
+    return words;
+  }
+
+  getData(node) {
+    if(!node) node = this.root;
+    if(isEmpty(node.labels)) return node.data;
+    return node.data.concat(this.concatMap(Object.keys(node.labels),
+       label => this.getData(node.labels[label])));
+  };
 
   removeData(node, parent, data, word) {
     if (node.data.length > 1 || Object.keys(node.labels).length > 1) {

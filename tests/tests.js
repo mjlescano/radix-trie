@@ -2,7 +2,7 @@ const test = require('tape');
 const RadixTree = require('../radixtree').RadixTree;
 
 test('AddWord Tests', (t) => {
-  t.plan(5);
+  t.plan(6);
   const trie = new RadixTree();
   trie.addWord('test', 'test');
   t.deepEqual(trie.root.labels,
@@ -80,6 +80,9 @@ test('AddWord Tests', (t) => {
         data: [],
       },
     }, 'Should Rearrange');
+  trie.addWord('te', 'te');
+  t.ok(trie.root.labels.te.eow, 'Should have eow True');
+
 });
 
 
