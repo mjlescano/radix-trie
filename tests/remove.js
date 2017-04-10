@@ -2,7 +2,7 @@ const test = require('tape');
 const RadixTree = require('../radixtree').RadixTree;
 
 test('Remove Word Test', (t) => {
-  t.plan(3);
+  t.plan(4);
   const trie = new RadixTree();
 
   trie.addWord('hoyo', 'hoyo');
@@ -54,4 +54,7 @@ test('Remove Word Test', (t) => {
       },
     }, 'Should Rearrange to ho-lo');
 
+  trie2.addWord('hola','hola');
+  trie2.removeWord('hola','hola');
+  t.notOk(trie2.findNode('hola'), 'No encontro el nodo hola')  
 });
