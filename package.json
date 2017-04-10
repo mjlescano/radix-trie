@@ -1,6 +1,6 @@
 {
   "name": "radix-trie",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "radix-trie implementation for Inverse Index Document Search.",
   "main": "radixtrie.js",
   "scripts": {
@@ -12,7 +12,10 @@
   },
   "keywords": [
     "radix",
-    "trie"
+    "trie",
+    "inversed index",
+    "autocomplete",
+    "Full text search"
   ],
   "author": "Plataforma 5",
   "license": "MIT",

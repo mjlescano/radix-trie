@@ -66,6 +66,20 @@ trie.addWord('tester', 3);
 trie.findData('test'); // [1, 2, 3]
 ```
 
+### findMany(arrayOfWords)
+
+Devuelve la intersección de los resultados de `findData` para cada palabra. Sirve para buscar por varias palabras a la vez.
+
+```javascript
+trie.addMany(['hola', 'test'], 1);
+trie.addMany(['hola', 'teresa'], 2);
+trie.addMany(['chao', 'trozo'], 3);
+
+trie.findMany(['test', 'hola']) // 1
+trie.findMany(['t']) // 1, 2 y 3
+trie.findMany(['h', 't']) // 1 y 2
+```
+
 ### autocomplete(substring)
 
 Devuelve un arreglo de palabras que comienzen con `substring`. o sea que estén debajo del nodo al que se pueda llegar siguiendo los labels del `substring`.

@@ -7,16 +7,8 @@ test('Search Tests FindWord', (t) => {
   trie.addWord('test', 'test');
   trie.addWord('testar', 'testar');
   trie.addWord('tester', 'tester');
-  t.deepEqual(trie.findNode('testar'),
-    {
-      word: 'testar',
-      data: ['testar'],
-    }, 'Should find testar');
-  t.deepEqual(trie.findNode('tester'),
-    {
-      word: 'tester',
-      data: ['tester'],
-    }, 'Should find tester');
+  t.equal(trie.findNode('testar').word, 'testar', 'Should find testar');
+  t.deepEqual(trie.findNode('tester').word, 'tester', 'Should find tester');
   t.notOk(trie.findNode('testeando'), 'Shouldn\'t find testeando');
 });
 
@@ -42,7 +34,6 @@ test('Search Find Data by substring', (t) => {
     5, 'Should find five ');
   t.equal(trie.findData('hola').length,
     1, 'Should find one by hola');
- 
   t.equal(trie.findData('hu').length,
     4, 'Should find four by hu');
 
@@ -77,4 +68,19 @@ test('autocomplete', (t) => {
     2, 'Should autocomplete two by hud');
   t.equal(trie.autocomplete('hudo').length,
     1, 'Should autocomplete one by hudo ');
+});
+
+test('Test findMany', (t) => {
+  t.plan(6);
+  const trie = new RadixTrie();
+  trie.addMany(['hola', 'test'], 1);
+  trie.addMany(['hola', 'teresa'], 2);
+  trie.addMany(['hola', 'teresa', 'chao'], 3);
+
+  t.ok(Array.isArray(trie.findMany(['test', 'hola'])), 'Should be an Array');
+  t.equal(trie.findMany(['test', 'hola']).length, 1, 'Should find only 1');
+  t.equal(trie.findMany(['t', 'hola']).length, 3, 'Should find only 1 and 2 and 3');
+  t.equal(trie.findMany(['c', 'hola']).length, 1, 'Should find only 3');
+  t.equal(trie.findMany(['chao', 't']).length, 1, 'Should find only 3');
+  t.equal(trie.findMany(['t']).length, 3, 'Should find all');
 });

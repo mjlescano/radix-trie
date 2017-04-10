@@ -24,26 +24,6 @@ exports.isEmpty = function (obj) {
   return true;
 };
 
-// exports.longestCommonPrefix = function (word, labels) {
-//   const matches = labels.map(function(label) {
-//     if (label[0] !== word[0]) {
-//       return 0;
-//     }
-//     return label.split('').reduce(function(acum, letter, index) {
-//       if (letter === word[index]) {
-//         return acum + 1;
-//       }
-//       return acum;
-//     }, 0);
-//   });
-//   const label = labels[matches.indexOf(Math.max(...matches))];
-//   let lcp = label;
-//   while (word.indexOf(lcp) !== 0) {
-//     lcp = lcp.slice(0, -1);
-//   }
-//   return [lcp, label];
-// };
-
 exports.longestCommonPrefix = function (word, labels) {
   const l = labels.sort();
   let lcp;
@@ -87,4 +67,54 @@ exports.concatMap = function (arr, fn) {
     nArr.forEach(elem => finalArr.push(elem));
   });
   return finalArr;
-}
+};
+
+exports.uuid = function uuid() {
+  let i;
+  let random;
+  let result = '';
+  for (i = 0; i < 32; i += 1) {
+    random = Math.random() * 16 | 0;
+    if (i === 8 || i === 12 || i === 16 || i === 20) {
+        result += '-';
+    }
+    result += (i === 12 ? 4 : (i === 16 ? (random & 3 | 8) : random))
+        .toString(16);
+  }
+  return result;
+};
+
+exports.unique = function(array) {
+  const result = [];
+  const seen = [];
+  const length = array.length;
+  for (let i = 0; i < length; i += 1) {
+    const value = array[i].id;
+    if (seen.indexOf(value) === -1) {
+      result.push(array[i]);
+      seen.push(value);
+    }
+  }
+  return result;
+};
+
+exports.intersection = function(array) {
+  const result = [];
+  const seen = [];
+  const argsLength = arguments.length;
+  const length = array.length;
+  for (let i = 0; i < length; i += 1) {
+    const item = array[i];
+    if (seen.indexOf(item.id) !== -1) continue;
+    let j;
+    for (j = 1; j < argsLength; j += 1) {
+      const argId = arguments[j].map(item => item.id);
+      if (argId.indexOf(item.id) === -1) break;
+    }
+    if (j === argsLength) {
+      seen.push(item.id);
+      result.push(item);
+    };
+  }
+  return result;
+};

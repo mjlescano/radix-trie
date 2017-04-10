@@ -2,6 +2,9 @@ const isEmpty = require('./utils.js').isEmpty;
 const longestCommonPrefix = require('./utils.js').longestCommonPrefix;
 const getDifference = require('./utils.js').getDifference;
 const concatMap = require('./utils.js').concatMap;
+const uuid = require('./utils.js').uuid;
+const intersection = require('./utils.js').intersection;
+
 
 class Root {
   constructor() {
@@ -16,6 +19,9 @@ class Node {
     this.data = [];
   }
   addData(data) {
+    if (!data.id) {
+      data = { id: uuid(), data };
+    }
     this.data.push(data);
     this.eow = true;
     return this;
@@ -61,6 +67,7 @@ module.exports = class radixTrie {
     return this;
   }
   addMany(wordArray, data) {
+    data = { id: uuid(), data };
     wordArray.sort().forEach(word => this.addWord(word, data));
   }
   findPartial(word) {
@@ -132,6 +139,10 @@ module.exports = class radixTrie {
     return null;
   }
 
+  findMany(arrayOfWords) {
+    return intersection(arrayOfWords.map(word => this.findData(word))[0]);
+  }
+
   autocomplete(substring, node, words, word) {
     if (!node) node = this.root;
     if (!words) words = [];
@@ -169,7 +180,7 @@ module.exports = class radixTrie {
   removeData(node, parent, data, word) {
     if (node.data.length > 1 || Object.keys(node.labels).length > 1) {
       node.data = node.data.filter(id => id !== data);
-      if(node.data.length == 0 && Object.keys(node.labels).length > 1){
+      if (node.data.length === 0 && Object.keys(node.labels).length > 1){
         node.eow = false;
       }
     }
@@ -178,8 +189,8 @@ module.exports = class radixTrie {
     }
   }
 
-  reorderNodes(node, parent, word) {
-    if (node.data.length == 0 && Object.keys(node.labels).length == 1) {
+  reorderNodes (node, parent, word) {
+    if (node.data.length === 0 && Object.keys(node.labels).length == 1) {
       const label = String(Object.keys(node.labels));
       delete parent.labels[word];
       parent.labels[word.concat(label)] = node.labels[label];
