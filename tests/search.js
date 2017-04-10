@@ -78,4 +78,3 @@ test('autocomplete', (t) => {
   t.equal(trie.autocomplete('hudo').length,
     1, 'Should autocomplete one by hudo ');
 });
-

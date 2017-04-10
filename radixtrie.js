@@ -28,6 +28,7 @@ module.exports = class radixTrie {
     this.root = new Root();
   }
   addWord(word, data, node) {
+    word = word.toLowerCase();
     if (typeof word !== 'string') return new Error('dont be such a sucker');
     if (!node) {
       node = this.root;
@@ -110,42 +111,60 @@ module.exports = class radixTrie {
       return this.getData(node);
     }
     for (let i = 1; i <= substring.length; i += 1) {
-      if (node.labels.hasOwnProperty(substring.slice(0,i))) {
-        return this.findData(substring.slice(i), node.labels[substring.slice(0,i)]);
+      if (node.labels.hasOwnProperty(substring.slice(0, i))) {
+        return this.findData(substring.slice(i), node.labels[substring.slice(0, i)]);
       }
     }
-    for (let i in Object.keys(node.labels) ) {
-      let label = Object.keys(node.labels)[i]
-      if (substring.charAt(0) === label.charAt(0)) {
-          return this.findData(getDifference(label, substring), node.labels[label]);    
+    for (let j = 0; j < Object.keys(node.labels).length; j += 1) {
+      const label = Object.keys(node.labels)[j];
+      let next = 0;
+      for (let z = 0; z <= substring.length; z += 1) {
+        if (substring.charAt(z) === label.charAt(z)) {
+          next = z + 1;
+        } else {
+          break;
+        }
       }
-      return this.getData(node.labels[label]);
+      if (next) {
+        return this.findData(substring.slice(next), node.labels[label]);
+      }
     }
-    return false
+    return null;
   }
 
-  autocomplete(substring, node, words) {
+  autocomplete(substring, node, words, word) {
     if (!node) node = this.root;
     if (!words) words = [];
-    
+    if (!word) word = '';
     if (node.eow) {
-      words.push(substring);
+      words.push(word);
     }
-    for (let i in Object.keys(node.labels) ) {
-      let label = Object.keys(node.labels)[i]
-      if(substring.charAt(0) === label.charAt(0)) {
-        return this.findData(getDifference(label, substring), node.labels[label]);    
+    Object.keys(node.labels).forEach((label) => {
+      let next = 0;
+      for (let z = 0; z <= substring.length; z += 1) {
+        if (substring.charAt(z) === label.charAt(z)) {
+          next = z + 1;
+        } else {
+          break;
+        }
       }
-    };
+      if (next || substring.length === 0) {
+        this.autocomplete(substring.slice(next), node.labels[label], words, word + label);
+      }
+    });
     return words;
   }
 
   getData(node) {
-    if(!node) node = this.root;
-    if(isEmpty(node.labels)) return node.data;
-    return node.data.concat(concatMap(Object.keys(node.labels),
+    if (!node) node = this.root;
+    if (isEmpty(node.labels)) return node.data;
+    if (node.data) {
+      return node.data.concat(concatMap(Object.keys(node.labels),
+         label => this.getData(node.labels[label])));
+    }
+    return [].concat(concatMap(Object.keys(node.labels),
        label => this.getData(node.labels[label])));
-  };
+  }
 
   removeData(node, parent, data, word) {
     if (node.data.length > 1 || Object.keys(node.labels).length > 1) {

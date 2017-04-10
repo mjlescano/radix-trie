@@ -49,7 +49,7 @@ const trie = new RadixTrie();
 trie.addMany(['hola', 'chao', 'chos'], {prueba: false});
 trie.findNode('hola'); 
 //{
-//  word: 'testar',
+//  word: 'hola',
 //  data: [{prueba: false}],
 //}
 ```
