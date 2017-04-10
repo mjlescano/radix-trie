@@ -1,9 +1,9 @@
 const test = require('tape');
-const RadixTree = require('../radixtree').RadixTree;
+const RadixTrie = require('../radixtrie');
 
 test('AddWord Tests', (t) => {
   t.plan(6);
-  const trie = new RadixTree();
+  const trie = new RadixTrie();
   trie.addWord('test', 'test');
   t.deepEqual(trie.root.labels,
     { test: { labels: {}, data: ['test'], eow: true } }, 'Created Trie with one word');
@@ -88,7 +88,7 @@ test('AddWord Tests', (t) => {
 
 test('AddWord Re-Arrenge Tests', (t) => {
   t.plan(4);
-  const trie = new RadixTree();
+  const trie = new RadixTrie();
 
   trie.addWord('hola', 'hola');
   trie.addWord('hoyo', 'hoyo');

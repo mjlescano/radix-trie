@@ -13,7 +13,7 @@ class Node {
   }
 }
 
-export default class RadixTree = {
+export default class radixTrie = {
   constructor(){
     this.root = new Root();
   }

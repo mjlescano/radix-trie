@@ -1,9 +1,9 @@
 const test = require('tape');
-const RadixTree = require('../radixtree').RadixTree;
+const RadixTrie = require('../radixtrie');
 
 test('Search Tests FindWord', (t) => {
   t.plan(3);
-  const trie = new RadixTree();
+  const trie = new RadixTrie();
   trie.addWord('test', 'test');
   trie.addWord('testar', 'testar');
   trie.addWord('tester', 'tester');
@@ -23,7 +23,7 @@ test('Search Tests FindWord', (t) => {
 
 test('Search Find Data by substring', (t) => {
   t.plan(7);
-  const trie = new RadixTree();
+  const trie = new RadixTrie();
   trie.addWord('test', 'test');
   trie.addWord('testar', 'testar');
   trie.addWord('tester', 'tester');
@@ -42,7 +42,7 @@ test('Search Find Data by substring', (t) => {
     5, 'Should find five ');
   t.equal(trie.findData('hola').length,
     1, 'Should find one by hola');
-  
+ 
   t.equal(trie.findData('hu').length,
     4, 'Should find four by hu');
 
@@ -51,12 +51,11 @@ test('Search Find Data by substring', (t) => {
 
   t.equal(trie.findData('hudo').length,
     1, 'Should find one by hudo ');
-
 });
 
-test('Search Find Data by substring', (t) => {
-  t.plan(7);
-  const trie = new RadixTree();
+test('autocomplete', (t) => {
+  t.plan(6);
+  const trie = new RadixTrie();
   trie.addWord('test', 'test');
   trie.addWord('testar', 'testar');
   trie.addWord('tester', 'tester');
@@ -66,20 +65,17 @@ test('Search Find Data by substring', (t) => {
   trie.addWord('huda', 'huda');
   trie.addWord('hudo', 'hudo');
 
-  t.equal(trie.findData('test').length,
-    3, 'Should AutoComplete three by test ');
-  t.equal(trie.findData('t').length,
-    3, 'Should find three by t');
-  t.equal(trie.findData('h').length,
-    5, 'Should AutoComplete five by h ');
-  t.equal(trie.findData('hola').length,
-    1, 'Should AutoComplete one by hola');
-  t.equal(trie.findData('hu').length,
-    4, 'Should AutoComplete four by hu');
-  t.equal(trie.findData('hud').length,
-    2, 'Should AutoComplete two by hud');
-  t.equal(trie.findData('hudo').length,
-    1, 'Should AutoComplete one by hudo ');
-
+  t.equal(trie.autocomplete('t').length,
+    3, 'Should autocomplete three by test ');
+  t.equal(trie.autocomplete('h').length,
+    5, 'Should autocomplete five by h ');
+  t.equal(trie.autocomplete('hola').length,
+    1, 'Should autocomplete one by hola');
+  t.equal(trie.autocomplete('hu').length,
+    4, 'Should autocomplete four by hu');
+  t.equal(trie.autocomplete('hud').length,
+    2, 'Should autocomplete two by hud');
+  t.equal(trie.autocomplete('hudo').length,
+    1, 'Should autocomplete one by hudo ');
 });
 

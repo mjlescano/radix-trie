@@ -1,8 +1,8 @@
 const rword = require('rword');
-const RadixTree = require('../radixtree').RadixTree;
+const radixTrie = require('../radixTrie').radixTrie;
 const number = 10000;
 const words = rword.generate(number);
-const trie = new RadixTree();
+const trie = new radixTrie();
 
 const t0 = Date.now();
 trie.addMany(words, 'test');

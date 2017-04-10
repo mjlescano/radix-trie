@@ -1,13 +1,13 @@
 const test = require('tape');
-const RadixTree = require('../radixtree').RadixTree;
+const RadixTrie = require('../radixtrie');
 
 test('Remove Word Test', (t) => {
   t.plan(4);
-  const trie = new RadixTree();
+  const trie = new RadixTrie();
 
   trie.addWord('hoyo', 'hoyo');
   trie.removeWord('hoyo', 'hoyo');
-  t.deepEqual(trie.root.labels,{})
+  t.deepEqual(trie.root.labels, {});
 
   trie.addWord('hola', 'hola');
   trie.addWord('joya', 'joya');
@@ -18,22 +18,22 @@ test('Remove Word Test', (t) => {
       ho: {
         labels: {
           la: {
-                labels: {},
-                data: ['hola'],
-                eow: true,
-              },
-          yo: {
-                labels: {},
-                data: ['hoyo'],
-                eow: true,
-              },
+            labels: {},
+            data: ['hola'],
+            eow: true,
           },
+          yo: {
+            labels: {},
+            data: ['hoyo'],
+            eow: true,
+          },
+        },
         data: [],
         eow: false,
       },
     }, 'Should Rearrange without joya');
 
-  const trie2 = new RadixTree();
+  const trie2 = new RadixTrie();
 
   trie2.addWord('ho', 'ho');
   trie2.addWord('hola', 'hola');

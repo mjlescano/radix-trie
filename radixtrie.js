@@ -23,7 +23,7 @@ class Node {
 }
 
 
-exports.RadixTree = class RadixTree {
+module.exports = class radixTrie {
   constructor() {
     this.root = new Root();
   }
@@ -71,7 +71,8 @@ exports.RadixTree = class RadixTree {
     if (!Object.keys(node.labels).length) {
       return node.data;
     }
-    return node.data.concat(concatMap(Object.keys(node.labels), label => this.extractNodes(node.labels[label])));
+    return node.data.concat(concatMap(Object.keys(node.labels),
+      label => this.extractNodes(node.labels[label])));
   }
 
   search(word, tree) {
@@ -101,12 +102,11 @@ exports.RadixTree = class RadixTree {
     }
     return node;
   }
-
   findData(substring, node) {
-    if(!node) {
+    if (!node) {
       node = this.root;
     }
-    if(substring.length < 1 || isEmpty(node.labels)) {
+    if (substring.length < 1 || isEmpty(node.labels)) {
       return this.getData(node);
     }
     for (let i = 1; i <= substring.length; i += 1) {
@@ -116,18 +116,19 @@ exports.RadixTree = class RadixTree {
     }
     for (let i in Object.keys(node.labels) ) {
       let label = Object.keys(node.labels)[i]
-      if(substring.charAt(0) === label.charAt(0)) {
+      if (substring.charAt(0) === label.charAt(0)) {
           return this.findData(getDifference(label, substring), node.labels[label]);    
       }
       return this.getData(node.labels[label]);
-    };
+    }
+    return false
   }
 
   autocomplete(substring, node, words) {
-    if(!node) node = this.root;
-    if(!words) words = [];
+    if (!node) node = this.root;
+    if (!words) words = [];
     
-    if(node.eow) {
+    if (node.eow) {
       words.push(substring);
     }
     for (let i in Object.keys(node.labels) ) {
@@ -189,7 +190,7 @@ exports.RadixTree = class RadixTree {
   update(oldWordArray, newWordArray, data) {
     oldWordArray.forEach((oldWord) => {
       this.removeWord(oldWord, data);
-    })
+    });
     this.addMany(newWordArray, data);
   }
 }
