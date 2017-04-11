@@ -140,7 +140,7 @@ module.exports = class radixTrie {
   }
 
   findMany(arrayOfWords) {
-    return intersection(arrayOfWords.map(word => this.findData(word))[0]);
+    return intersection(arrayOfWords.map(word => this.findData(word)));
   }
 
   autocomplete(substring, node, words, word) {

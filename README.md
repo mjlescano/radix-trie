@@ -107,6 +107,7 @@ trie.findWord('hola', 'hola'); //false
 
 ## To do
 
-- [ ] Update.
+- [ ] Implementar Update.
 - [ ] Sanitizar palabras antes de guardarlas en el árbol.
 - [ ] Filtrar stop words en varios idiomas.
+- [ ] Aumentar la perfomance.

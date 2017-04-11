@@ -84,3 +84,27 @@ test('Test findMany', (t) => {
   t.equal(trie.findMany(['chao', 't']).length, 1, 'Should find only 3');
   t.equal(trie.findMany(['t']).length, 3, 'Should find all');
 });
+
+
+test('Test more findMany', (t) => {
+  const trie = new RadixTrie();
+  trie.addMany(['test', 'final'], 1);
+  trie.addMany(['otro', 'test'], 2);
+  trie.addMany(['test'], 3);
+  trie.addMany(['test1'], 4);
+  trie.addMany(['test2'], 5);
+  trie.addMany(['test3'], 6);
+  trie.addMany(['test4'], 7);
+  trie.addMany(['facu', 'come'], 8);
+  trie.addMany(['toni', 'come'], 9);
+
+  t.equal(trie.findMany(['t']).length, 8, 'Should find 8');
+  t.equal(trie.findMany(['t', 't', 't']).length, 8, 'Should find 8 too');
+  t.equal(trie.findMany(['t', 'f']).length, 1, 'Should find only 1 by t and f');
+  t.equal(trie.findMany(['come']).length, 2, 'Should find only 2');
+  t.equal(trie.findMany(['come', 't']).length, 1, 'Should find only 1 by come and t');
+  t.equal(trie.findMany(['o', 't']).length, 1, 'Should find 1');
+  t.equal(trie.findMany(['t', 'o']).length, 1, 'Should find 1');
+  t.equal(trie.findMany(['t', 'o', 'a']).length, 0, 'Should not find nada');
+  t.end();
+});

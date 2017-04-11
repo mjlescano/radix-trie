@@ -1,6 +1,6 @@
 {
   "name": "radix-trie",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "radix-trie implementation for Inverse Index Document Search.",
   "main": "radixtrie.js",
   "scripts": {

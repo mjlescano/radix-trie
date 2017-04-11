@@ -98,23 +98,24 @@ exports.unique = function(array) {
   return result;
 };
 
-exports.intersection = function(array) {
+exports.intersection = function intersection(array) {
   const result = [];
   const seen = [];
-  const argsLength = arguments.length;
-  const length = array.length;
+  const argsLength = array.length;
+  const length = array[0].length;
   for (let i = 0; i < length; i += 1) {
-    const item = array[i];
+    const item = array[0][i];
     if (seen.indexOf(item.id) !== -1) continue;
     let j;
     for (j = 1; j < argsLength; j += 1) {
-      const argId = arguments[j].map(item => item.id);
+      if (!array[j]) return [];
+      const argId = array[j].map(item => item.id);
       if (argId.indexOf(item.id) === -1) break;
     }
     if (j === argsLength) {
-      seen.push(item.id);
       result.push(item);
-    };
+    }
+    seen.push(item.id);
   }
   return result;
 };
