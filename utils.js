@@ -120,3 +120,27 @@ exports.intersection = function intersection(array) {
   }
   return result;
 };
+
+exports.replaceRareChar = (function replaceRareChar() {
+  var regexExp = /[áóéíúÁÓÉÍÚäàâạÄÀÂẠëèêẹËÈÊẸïìîịÏÌÎỊüùûụÜÙÛỤöòôọÖÒÔỌÇç]/g;
+  var translate = {
+    'á': 'a', 'ó': 'o', 'ú': 'u', 'í': 'i',
+    'Á': 'A', 'Ó': 'O', 'Ú': 'U', 'Í': 'I',
+    'ä': 'a', 'à': 'a', 'â': 'a', 'ạ': 'a',
+    'Ä': 'A', 'À': 'A', 'Â': 'A', 'Ạ': 'A',
+    'ë': 'e', 'è': 'e', 'ê': 'e', 'ẹ': 'e',
+    'Ë': 'E', 'È': 'E', 'Ê': 'E', 'Ẹ': 'E',
+    'ï': 'i', 'ì': 'i', 'î': 'i', 'ị': 'i',
+    'Ï': 'I', 'Ì': 'I', 'Î': 'I', 'Ị': 'I',
+    'ü': 'u', 'ù': 'u', 'û': 'u', 'ụ': 'u',
+    'Ü': 'U', 'Ù': 'U', 'Û': 'U', 'Ụ': 'U',
+    'ö': 'o', 'ò': 'o', 'ô': 'o', 'ọ': 'o',
+    'Ö': 'O', 'Ò': 'O', 'Ô': 'O', 'Ọ': 'O',
+    'Ç': 'C', 'ç': 'c',
+  };
+  return function(str) {
+    return ( str.replace(regexExp, function(match) { 
+      return translate[match]; 
+    }) );
+  }
+})();
