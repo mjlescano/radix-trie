@@ -106,5 +106,6 @@ test('Test more findMany', (t) => {
   t.equal(trie.findMany(['o', 't']).length, 1, 'Should find 1');
   t.equal(trie.findMany(['t', 'o']).length, 1, 'Should find 1');
   t.equal(trie.findMany(['t', 'o', 'a']).length, 0, 'Should not find nada');
+  t.equal(trie.findMany(['2']).length, 0, 'Should not find nada');
   t.end();
 });

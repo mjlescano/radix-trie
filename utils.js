@@ -99,6 +99,7 @@ exports.unique = function(array) {
 };
 
 exports.intersection = function intersection(array) {
+  if (!array[0]) return [];
   const result = [];
   const seen = [];
   const argsLength = array.length;
