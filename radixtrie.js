@@ -6,7 +6,6 @@ const uuid = require('./utils.js').uuid;
 const intersection = require('./utils.js').intersection;
 const replace = require('./utils.js').replaceRareChar;
 
-
 class Root {
   constructor() {
     this.labels = {};
@@ -35,7 +34,7 @@ module.exports = class radixTrie {
     this.root = new Root();
   }
   addWord(word, data, node) {
-    word = word.toLowerCase();
+    word = replace(word.toLowerCase());
     if (typeof word !== 'string') return new Error('dont be such a sucker');
     if (!node) {
       node = this.root;
@@ -98,7 +97,7 @@ module.exports = class radixTrie {
 
   find(word) {
     const tree = this;
-    return this.search.call(this.root, word, tree);
+    return this.search.call(this.root, replace(word.toLowerCase()), tree);
   }
 
   findNode(word) {
@@ -113,6 +112,7 @@ module.exports = class radixTrie {
   }
   findData(substring, node) {
     if (!node) {
+      substring = replace(substring.toLowerCase());
       node = this.root;
     }
     if (substring.length < 1 || isEmpty(node.labels)) {
@@ -145,7 +145,10 @@ module.exports = class radixTrie {
   }
 
   autocomplete(substring, node, words, word) {
-    if (!node) node = this.root;
+    if (!node) {
+      node = this.root;
+      substring = replace(substring.toLowerCase());
+    }
     if (!words) words = [];
     if (!word) word = '';
     if (node.eow) {
@@ -172,10 +175,10 @@ module.exports = class radixTrie {
     if (isEmpty(node.labels)) return node.data;
     if (node.data) {
       return node.data.concat(concatMap(Object.keys(node.labels),
-         label => this.getData(node.labels[label])));
+        label => this.getData(node.labels[label])));
     }
     return [].concat(concatMap(Object.keys(node.labels),
-       label => this.getData(node.labels[label])));
+      label => this.getData(node.labels[label])));
   }
 
   removeData(node, parent, data, word) {
@@ -190,7 +193,7 @@ module.exports = class radixTrie {
     }
   }
 
-  reorderNodes (node, parent, word) {
+  reorderNodes(node, parent, word) {
     if (node.data.length === 0 && Object.keys(node.labels).length == 1) {
       const label = String(Object.keys(node.labels));
       delete parent.labels[word];
@@ -215,7 +218,7 @@ module.exports = class radixTrie {
 
   removeWord(word, data) {
     const tree = this;
-    return this.findAndRemove.call(this.root, word, data, tree)
+    return this.findAndRemove.call(this.root, replace(word.toLowerCase()), data, tree);
   }
 
   update(oldWordArray, newWordArray, data) {

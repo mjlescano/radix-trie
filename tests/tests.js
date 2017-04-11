@@ -44,3 +44,16 @@ test('AddWord Re-Arrenge Tests', (t) => {
   trie.addWord('joya', 'joya');
   t.ok(r.ho && r.joya && r.ho.labels.l.labels.a, 'Should Rearrange with Joooooooyaaaaa!');
 });
+
+test('Replace Rare Character', (t) => {
+  t.plan(2);
+  const trie = new RadixTrie();
+
+  trie.addWord('hÖlâ', 'hola');
+  trie.addWord('höyo', 'hoyo');
+  t.ok(trie.findNode('hola') && trie.findNode('hoyo'), 'Should save as regular worlds');
+
+  trie.addWord('hola', 'hola');
+  trie.addWord('hoyo', 'hoyo');
+  t.ok(trie.findNode('hÖlâ') && trie.findNode('höyo'), 'Should find as regular worlds');
+});

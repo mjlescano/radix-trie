@@ -122,8 +122,8 @@ exports.intersection = function intersection(array) {
 };
 
 exports.replaceRareChar = (function replaceRareChar() {
-  var regexExp = /[áóéíúÁÓÉÍÚäàâạÄÀÂẠëèêẹËÈÊẸïìîịÏÌÎỊüùûụÜÙÛỤöòôọÖÒÔỌÇç]/g;
-  var translate = {
+  const regexExp = /[áóéíúÁÓÉÍÚäàâạÄÀÂẠëèêẹËÈÊẸïìîịÏÌÎỊüùûụÜÙÛỤöòôọÖÒÔỌÇç]/g;
+  const translate = {
     'á': 'a', 'ó': 'o', 'ú': 'u', 'í': 'i',
     'Á': 'A', 'Ó': 'O', 'Ú': 'U', 'Í': 'I',
     'ä': 'a', 'à': 'a', 'â': 'a', 'ạ': 'a',
@@ -139,8 +139,8 @@ exports.replaceRareChar = (function replaceRareChar() {
     'Ç': 'C', 'ç': 'c',
   };
   return function(str) {
-    return ( str.replace(regexExp, function(match) { 
+    return (str.replace(regexExp, function(match) { 
       return translate[match]; 
-    }) );
+    }));
   }
 })();
