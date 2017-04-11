@@ -38,13 +38,13 @@ module.exports = class radixTrie {
   }
   addWord(word, data, node) {
     word = replace(word.toLowerCase());
-    if (typeof word !== 'string') return new Error('dont be such a sucker');
+    if (typeof word !== 'string') return new Error('TypeError: the word to add to the radix-tree should be a String');
     if (!node) {
       node = this.root;
     }
 
     if (isEmpty(node.labels)) {
-      node.labels[word] = new Node(true, node).addData(data);
+      node.labels[word] = new Node(true).addData(data);
       this.count += 1;
       return this;
     }
@@ -58,7 +58,7 @@ module.exports = class radixTrie {
     // Get Longest Common Prefix with all Labels
     const [lcp, label] = longestCommonPrefix(word, Object.keys(node.labels));
     if (!lcp) {
-      node.labels[word] = new Node(true, node).addData(data);
+      node.labels[word] = new Node(true).addData(data);
       this.count += 1;
       return this;
     }
@@ -66,7 +66,7 @@ module.exports = class radixTrie {
       return this.addWord(word.substring(lcp.length), data, node.labels[lcp]);
     }
     // If the lcp is not null, and it does not exists, we need to rearrenge
-    node.labels[lcp] = new Node(false, node);
+    node.labels[lcp] = new Node(false);
     this.addWord(word.substring(lcp.length), data, node.labels[lcp]);
     node.labels[lcp].labels[getDifference(lcp, label)] = node.labels[label];
     delete node.labels[label];
