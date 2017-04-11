@@ -48,8 +48,8 @@ test('autocomplete', (t) => {
   t.plan(6);
   const trie = new RadixTrie();
   trie.addWord('test', 'test');
-  trie.addWord('testar', 'testar');
-  trie.addWord('tester', 'tester');
+  trie.addWord('Testar', 'testar');
+  trie.addWord('Tester', 'tester');
   trie.addWord('hola', 'hola');
   trie.addWord('hugo', 'hugo');
   trie.addWord('hula', 'hula');
@@ -89,7 +89,7 @@ test('Test findMany', (t) => {
 test('Test more findMany', (t) => {
   const trie = new RadixTrie();
   trie.addMany(['test', 'final'], 1);
-  trie.addMany(['otro', 'test'], 2);
+  trie.addMany(['oro', 'test'], 2);
   trie.addMany(['test'], 3);
   trie.addMany(['test1'], 4);
   trie.addMany(['test2'], 5);

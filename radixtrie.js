@@ -5,6 +5,7 @@ const concatMap = require('./utils.js').concatMap;
 const uuid = require('./utils.js').uuid;
 const intersection = require('./utils.js').intersection;
 const replace = require('./utils.js').replaceRareChar;
+const stopwords = require('./stopwords');
 
 class Root {
   constructor() {
@@ -30,8 +31,10 @@ class Node {
 
 
 module.exports = class radixTrie {
-  constructor() {
+  constructor(lang = 'es') {
     this.root = new Root();
+    this.stopwords = stopwords[lang];
+    this.count = 0;
   }
   addWord(word, data, node) {
     word = replace(word.toLowerCase());
@@ -42,11 +45,13 @@ module.exports = class radixTrie {
 
     if (isEmpty(node.labels)) {
       node.labels[word] = new Node(true, node).addData(data);
+      this.count += 1;
       return this;
     }
 
     if (node.labels[word]) {
       node.labels[word].addData(data);
+      this.count += 1;
       return this;
     }
 
@@ -54,6 +59,7 @@ module.exports = class radixTrie {
     const [lcp, label] = longestCommonPrefix(word, Object.keys(node.labels));
     if (!lcp) {
       node.labels[word] = new Node(true, node).addData(data);
+      this.count += 1;
       return this;
     }
     if (node.labels[lcp]) { // If the label for the lcp exists
@@ -68,7 +74,8 @@ module.exports = class radixTrie {
   }
   addMany(wordArray, data) {
     data = { id: uuid(), data };
-    wordArray.sort().forEach(word => this.addWord(word, data));
+    wordArray.sort().filter(words => this.filterStopWords(words))
+      .forEach(word => this.addWord(word, data));
   }
   findPartial(word) {
     const node = this.find(word);
@@ -101,6 +108,7 @@ module.exports = class radixTrie {
   }
 
   findNode(word) {
+    word = word.toLowerCase();
     const node = this.find(word);
     if (node) {
       return {
@@ -180,21 +188,22 @@ module.exports = class radixTrie {
     return [].concat(concatMap(Object.keys(node.labels),
       label => this.getData(node.labels[label])));
   }
-
   removeData(node, parent, data, word) {
     if (node.data.length > 1 || Object.keys(node.labels).length > 1) {
-      node.data = node.data.filter(id => id !== data);
-      if (node.data.length === 0 && Object.keys(node.labels).length > 1){
+      node.data = node.data.filter(item => item.data !== data); // Add Deep Equal
+      if (node.data.length === 0 && Object.keys(node.labels).length > 1) {
         node.eow = false;
+        this.count -= 1;
       }
     }
-    if (node.data.length <= 1 && Object.keys(node.labels).length == 0) {
+    if (node.data.length <= 1 && Object.keys(node.labels).length === 0) {
       delete parent.labels[word];
+      this.count -= 1;
     }
   }
 
   reorderNodes(node, parent, word) {
-    if (node.data.length === 0 && Object.keys(node.labels).length == 1) {
+    if (node.data.length === 0 && Object.keys(node.labels).length === 1) {
       const label = String(Object.keys(node.labels));
       delete parent.labels[word];
       parent.labels[word.concat(label)] = node.labels[label];
@@ -227,4 +236,7 @@ module.exports = class radixTrie {
     });
     this.addMany(newWordArray, data);
   }
-}
+  filterStopWords(word) {
+    return this.stopwords.indexOf(word) === -1;
+  }
+};
