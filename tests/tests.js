@@ -3,7 +3,7 @@ const RadixTrie = require('../radixtrie');
 
 test('AddWord Tests', (t) => {
   t.plan(6);
-  const trie = new RadixTrie();
+  const trie = new RadixTrie('es');
   trie.addWord('test', 'test');
   const r = trie.root.labels;
   t.ok(r.test && r.test.eow, 'Created Trie with one word');
@@ -44,3 +44,17 @@ test('AddWord Re-Arrenge Tests', (t) => {
   trie.addWord('joya', 'joya');
   t.ok(r.ho && r.joya && r.ho.labels.l.labels.a, 'Should Rearrange with Joooooooyaaaaa!');
 });
+
+test('Count words', (t) => {
+  const trie = new RadixTrie();
+  const words = ['toni', 'tono', 'tralice', 'prueba', 'hellow', 'chao'];
+  trie.addMany(words);
+  t.equal(trie.count, words.length, 'Should count all words');
+  const sw = ['un', 'unas', 'data'];
+  trie.addMany(sw, 'data');
+  t.equal(trie.count, words.length + 1, 'Should not add stopwords');
+  trie.removeWord('data', 'data');
+  t.equal(trie.count, words.length, 'Should remove one');
+  t.end();
+});
+
