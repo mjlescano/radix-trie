@@ -4,6 +4,7 @@ const getDifference = require('./utils.js').getDifference;
 const concatMap = require('./utils.js').concatMap;
 const uuid = require('./utils.js').uuid;
 const intersection = require('./utils.js').intersection;
+const replace = require('./utils.js').replaceRareChar;
 const stopwords = require('./stopwords');
 
 
