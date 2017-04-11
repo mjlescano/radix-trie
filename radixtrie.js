@@ -74,8 +74,10 @@ module.exports = class radixTrie {
   }
   addMany(wordArray, data) {
     data = { id: uuid(), data };
-    wordArray.sort().filter(words => this.filterStopWords(words))
-      .forEach(word => this.addWord(word, data));
+    wordArray.map(word => replace(word).toLowerCase())
+      .sort()
+      .filter(words=> this.filterStopWords(words))
+      .forEach(word=> this.addWord(word, data))
   }
   findPartial(word) {
     const node = this.find(word);
