@@ -23,10 +23,8 @@
     "url": "https://github.com/Plataforma5/radix-trie/issues"
   },
   "homepage": "https://github.com/Plataforma5/radix-trie#readme",
-  "dependencies": {
-    "tape": "^4.6.3"
-  },
   "devDependencies": {
-    "rword": "^2.1.0"
+    "rword": "^2.1.0",
+    "tape": "^4.6.3"
   }
 }
