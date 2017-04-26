@@ -36,9 +36,14 @@ module.exports = class radixTrie {
     this.stopwords = stopwords[lang];
     this.count = 0;
   }
+
   addWord(word, data, node) {
     word = replace(word.toLowerCase());
-    if (typeof word !== 'string') return new Error('TypeError: the word to add to the radix-tree should be a String');
+
+    if (typeof word !== 'string') {
+      return new Error('TypeError: the word to add to the radix-tree should be a String');
+    }
+
     if (!node) {
       node = this.root;
     }
@@ -62,6 +67,7 @@ module.exports = class radixTrie {
       this.count += 1;
       return this;
     }
+
     if (node.labels[lcp]) { // If the label for the lcp exists
       return this.addWord(word.substring(lcp.length), data, node.labels[lcp]);
     }
@@ -72,6 +78,7 @@ module.exports = class radixTrie {
     delete node.labels[label];
     return this;
   }
+
   addMany(wordArray, data) {
     data = { id: uuid(), data };
     wordArray.map(word => replace(word).toLowerCase())
@@ -79,6 +86,7 @@ module.exports = class radixTrie {
       .filter(words=> this.filterStopWords(words))
       .forEach(word=> this.addWord(word, data))
   }
+
   findPartial(word) {
     const node = this.find(word);
     return this.extractNodes(node);
@@ -96,11 +104,13 @@ module.exports = class radixTrie {
     if (!word) {
       return this;
     }
+
     for (let i = 1; i <= word.length; i += 1) {
       if (this.labels[word.slice(0, i)]) {
         return tree.search.call(this.labels[word.slice(0, i)], word.slice(i), tree);
       }
     }
+
     return false;
   }
 
@@ -112,14 +122,17 @@ module.exports = class radixTrie {
   findNode(word) {
     word = word.toLowerCase();
     const node = this.find(word);
+
     if (node) {
       return {
         word,
         data: node.data,
       };
     }
+
     return node;
   }
+
   findData(substring, node) {
     if (!node) {
       substring = replace(substring.toLowerCase());
@@ -190,6 +203,7 @@ module.exports = class radixTrie {
     return [].concat(concatMap(Object.keys(node.labels),
       label => this.getData(node.labels[label])));
   }
+
   removeData(node, parent, data, word) {
     if (node.data.length > 1 || Object.keys(node.labels).length > 1) {
       node.data = node.data.filter(item => item.data !== data); // Add Deep Equal
@@ -238,6 +252,7 @@ module.exports = class radixTrie {
     });
     this.addMany(newWordArray, data);
   }
+  
   filterStopWords(word) {
     return this.stopwords.indexOf(word) === -1;
   }
