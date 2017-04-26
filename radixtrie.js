@@ -30,7 +30,7 @@ class Node {
 }
 
 
-module.exports = class radixTrie {
+module.exports = class RadixTrie {
   constructor(lang = 'es') {
     this.root = new Root();
     this.stopwords = stopwords[lang];
@@ -252,7 +252,7 @@ module.exports = class radixTrie {
     });
     this.addMany(newWordArray, data);
   }
-  
+
   filterStopWords(word) {
     return this.stopwords.indexOf(word) === -1;
   }
