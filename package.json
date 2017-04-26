@@ -1,6 +1,6 @@
 {
   "name": "mjlescano-radix-trie",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "radix-trie implementation for Inverse Index Document Search.",
   "main": "dist/radixtrie.js",
   "scripts": {
