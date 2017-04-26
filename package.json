@@ -2,9 +2,11 @@
   "name": "radix-trie",
   "version": "1.0.5",
   "description": "radix-trie implementation for Inverse Index Document Search.",
-  "main": "radixtrie.js",
+  "main": "dist/radixtrie.js",
   "scripts": {
-    "test": "tape tests/*.js"
+    "build": "rollup -c",
+    "test": "tape tests/*.js",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,12 @@
   },
   "homepage": "https://github.com/Plataforma5/radix-trie#readme",
   "devDependencies": {
+    "babel-plugin-external-helpers": "~6.22.0",
+    "babel-preset-es2015": "~6.24.1",
+    "babel-preset-es2015-rollup": "~3.0.0",
+    "rollup": "~0.41.6",
+    "rollup-plugin-babel": "~2.7.1",
+    "rollup-plugin-node-resolve": "~3.0.0",
     "rword": "^2.1.0",
     "tape": "^4.6.3"
   }
