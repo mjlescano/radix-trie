@@ -1,3 +1,4 @@
 module.exports = {
-  es: require('./es.js'),
+  en: require('./en.json'),
+  es: require('./es.json'),
 };
