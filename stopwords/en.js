@@ -1,4 +1,4 @@
-[
+module.exports = [
   "a",
   "about",
   "an",

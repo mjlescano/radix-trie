@@ -1,5 +1,5 @@
 {
-  "name": "radix-trie",
+  "name": "mjlescano-radix-trie",
   "version": "1.0.5",
   "description": "radix-trie implementation for Inverse Index Document Search.",
   "main": "dist/radixtrie.js",
@@ -31,6 +31,7 @@
     "babel-preset-es2015-rollup": "~3.0.0",
     "rollup": "~0.41.6",
     "rollup-plugin-babel": "~2.7.1",
+    "rollup-plugin-commonjs": "~8.0.2",
     "rollup-plugin-node-resolve": "~3.0.0",
     "rword": "^2.1.0",
     "tape": "^4.6.3"
